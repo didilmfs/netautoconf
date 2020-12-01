@@ -37,36 +37,39 @@ if (VENDOR == 'cisco'):
         elif(IPADDR in DIST):
                 # Memasukan nilai variable IPADDR ke ansible inventory dist cisco
                 with open("CiscoInventoryDist", "r") as in_file:
-                      buf = in_file.readlines()
-
-                buf.insert(1, (IPADDR + '\n'))
-
-                with open("CiscoInventoryDist", "w") as out_file:
-                    out_file.writelines(buf)
-                # Menjalankan command ansible-playbook untuk push config
-                os.system('ansible-playbook -i CiscoInventoryDist CiscoPushConfDist.yml')
-                # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
-                config = os.system('ansible-playbook -i CiscoInventoryDist CiscoGetConfDist.yml')
-                # Mengirimkan nilai variable ke mongodb
-                #collection = db.kelompokg
-                #updateResult = collection.insert_many(config)
+                        buf = in_file.readlines()
+                if(IPADDR in buf):
+                        print("Device dengan ip address " + IPADDR + " sudah terkonfigurasi sebelumnya")
+                else:
+                        buf.insert(1, (IPADDR + '\n'))
+                        with open("CiscoInventoryDist", "w") as out_file:
+                            out_file.writelines(buf)
+                        # Menjalankan command ansible-playbook untuk push config
+                        os.system('ansible-playbook -i CiscoInventoryDist CiscoPushConfDist.yml')
+                        # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
+                        config = os.system('ansible-playbook -i CiscoInventoryDist CiscoGetConfDist.yml')
+                        # Mengirimkan nilai variable ke mongodb
+                        #collection = db.kelompokg
+                        #updateResult = collection.insert_many(config)
 
         elif(IPADDR in ACCESS):
                 # Memasukan nilai variable IPADDR ke ansible inventory acc cisco
                 with open("CiscoInventoryAccess", "r") as in_file:
                       buf = in_file.readlines()
-
-                buf.insert(1, (IPADDR + '\n'))
-
-                with open("CiscoInventoryAccess", "w") as out_file:
-                      out_file.writelines(buf)
-                # Menjalankan command ansible-playbook untuk push config
-                os.system('ansible-playbook -i CiscoInventoryAccess CiscoPushConfAccess.yml')
-                # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
-                config = os.system('ansible-playbook -i CiscoInventoryAccess CiscoGetConfAccess.yml')
-                # Mengirimkan nilai variable ke mongodb
-                #collection = db.kelompokg
-                #updateResult = collection.insert_many(config)
+                if(IPADDR in buf):
+                        print("Device dengan ip address " + IPADDR + " sudah terkonfigurasi sebelumnya")
+                
+                else:
+                        buf.insert(1, (IPADDR + '\n'))
+                        with open("CiscoInventoryAccess", "w") as out_file:
+                              out_file.writelines(buf)
+                        # Menjalankan command ansible-playbook untuk push config
+                        os.system('ansible-playbook -i CiscoInventoryAccess CiscoPushConfAccess.yml')
+                        # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
+                        config = os.system('ansible-playbook -i CiscoInventoryAccess CiscoGetConfAccess.yml')
+                        # Mengirimkan nilai variable ke mongodb
+                        #collection = db.kelompokg
+                        #updateResult = collection.insert_many(config)
         else:
                 print("ip address tidak ada dalam range")
 
@@ -98,36 +101,47 @@ elif (VENDOR == 'huawei'):
         elif(IPADDR in DIST):
                 # Memasukan nilai variable IPADDR ke ansible inventory dist huawei
                 with open("HuaweiInventoryDist", "r") as in_file:
-                      buf = in_file.readlines()
+                        buf = in_file.readlines()
+                
+                if((IPADDR+'\n') in buf):
+                        print("Device dengan ip address " + IPADDR + " sudah terkonfigurasi sebelumnya");
+                else: 
+                        buf.insert(1, (IPADDR + '\n'))
+                        with open("HuaweiInventoryDist", "w") as out_file:
+                              out_file.writelines(buf)
+                        # Menjalankan command ansible-playbook untuk push config
+                        os.system('ansible-playbook -i HuaweiInventoryDist HuaweiPushConfDist.yml')
+                        # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
+                        config = os.system('ansible-playbook -i HuaweiInventoryDist HuaweiGetConfDist.yml')
+                        with open("getconf.txt", "r") as getconf_file:
+                                getconf = getconf_file.read()
 
-                buf.insert(1, (IPADDR + '\n'))
-
-                with open("HuaweiInventoryDist", "w") as out_file:
-                      out_file.writelines(buf)
-                # Menjalankan command ansible-playbook untuk push config
-                os.system('ansible-playbook -i HuaweiInventoryDist HuaweiPushConfDist.yml')
-                # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
-                config = os.system('ansible-playbook -i HuaweiInventoryDist HuaweiGetConfDist.yml')
-                # Mengirimkan nilai variable ke mongodb
-                #collection = db.kelompokg
-                #updateResult = collection.insert_many(config)
+                        print(getconf)
+                        # Mengirimkan nilai variable ke mongodb
+                        #collection = db.kelompokg
+                        #updateResult = collection.insert_many(config)
 
         elif(IPADDR in ACCESS):
                 # Memasukan nilai variable IPADDR ke ansible inventory acc huawei
                 with open("HuaweiInventoryAccess", "r") as in_file:
-                      buf = in_file.readlines()
+                        buf = in_file.readlines()
+                if((IPADDR+'\n') in buf):
+                        print("Device dengan ip address " + IPADDR + " sudah terkonfigurasi sebelumnya");
+                else:
+                        buf.insert(1, (IPADDR + '\n'))
+                        with open("HuaweiInventoryAccess", "w") as out_file:
+                              out_file.writelines(buf)
+                        # Menjalankan command ansible-playbook untuk push config
+                        os.system('ansible-playbook -i HuaweiInventoryAccess HuaweiPushConfAccess.yml')
+                        # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
+                        config = os.system('ansible-playbook -i HuaweiInventoryAccess HuaweiGetConfAccess.yml')
+                        with open("getconf.txt", "r") as getconf_file:
+                                getconf = getconf_file.read()
 
-                buf.insert(1, (IPADDR + '\n'))
-
-                with open("HuaweiInventoryAccess", "w") as out_file:
-                      out_file.writelines(buf)
-                # Menjalankan command ansible-playbook untuk push config
-                os.system('ansible-playbook -i HuaweiInventoryAccess HuaweiPushConfAccess.yml')
-                # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
-                config = os.system('ansible-playbook -i HuaweiInventoryAccess HuaweiGetConfAccess.yml')
-                # Mengirimkan nilai variable ke mongodb
-                #collection = db.kelompokg
-                #updateResult = collection.insert_many(config)
+                        print(getconf)
+                        # Mengirimkan nilai variable ke mongodb
+                        #collection = db.kelompokg
+                        #updateResult = collection.insert_many(config)
         else:
                 print("ip address tidak ada dalam range")
 else:
