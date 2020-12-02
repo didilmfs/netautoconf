@@ -80,23 +80,24 @@ elif (VENDOR == 'huawei'):
                         buf = in_file.readlines()
 
                 if((IPADDR+'\n') in buf):
-                        print("Device dengan ip address " + IPADDR + " sudah terkonfigurasi sebelumnya");
+                        continue
                 else:
                         buf.insert(1, (IPADDR + '\n'))
-                        with open("HuaweiInventoryCore", "w") as out_file:
-                                out_file.writelines(buf)
+                        
+                with open("HuaweiInventoryCore", "w") as out_file:
+                        out_file.writelines(buf)
 
-                        # Menjalankan command ansible-playbook untuk push config
-                        os.system('ansible-playbook -i HuaweiInventoryCore HuaweiPushConfCore.yml')
-                        # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
-                        config = os.system('ansible-playbook -i HuaweiInventoryCore HuaweiGetConfCore.yml')
-                        with open("getconf.txt", "r") as getconf_file:
-                                getconf = getconf_file.read()
+                # Menjalankan command ansible-playbook untuk push config
+                os.system('ansible-playbook -i HuaweiInventoryCore HuaweiPushConfCore.yml')
+                # Mendapatkan informasi konfigurasi device & Memasukan output ansible ke variable
+                config = os.system('ansible-playbook -i HuaweiInventoryCore HuaweiGetConfCore.yml')
+                with open("getconf.txt", "r") as getconf_file:
+                        getconf = getconf_file.read()
 
-                        print(getconf)
-                        # Mengirimkan nilai variable ke mongodb
-                        #collection = db.kelompokg
-                        #updateResult = collection.insert_many(config)
+                print(getconf)
+                # Mengirimkan nilai variable ke mongodb
+                #collection = db.kelompokg
+                #updateResult = collection.insert_many(config)
 
         elif(IPADDR in DIST):
                 # Memasukan nilai variable IPADDR ke ansible inventory dist huawei
